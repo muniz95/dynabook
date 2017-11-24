@@ -1,20 +1,21 @@
 import { h, Component } from 'preact';
-import logo from './logo.svg';
+import Router from 'preact-router'
+import Header from './components/Header'
+import Home from './views/Home'
 import './App.css';
 
 class App extends Component {
   render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Preact</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+  return (
+    <div className="App">
+      <Header />
+      <div className="container">
+        <Router>
+          <Home path='/' />
+        </Router>
       </div>
-    );
+    </div>
+  );
   }
 }
 
