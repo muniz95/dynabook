@@ -33,15 +33,14 @@ class Home extends Component {
         const button = isReading
             ? 
                 <div>
-                    <button onClick={() => this.pauseText()}>Pausar</button>
+                    <h1 onClick={() => this.pauseText()} class="current-word">{currentWord}</h1>
                 </div>
             :
                 <div>
-                    <button onClick={() => this.showText()}>Iniciar</button>
+                    <h1 onClick={() => this.showText()} class="current-word">{currentWord}</h1>
                 </div>
         return (
             <div>
-                <h1 class="current-word">{currentWord}</h1>
                 {/*
                 Echtamos ahí na página {this.props.page}
                 <div><button onClick={this.props.dispatchPreviousPage}>Página anterior</button></div>

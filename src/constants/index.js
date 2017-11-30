@@ -1,2 +1,3 @@
-export const PREVIOUS_PAGE = 'PREVIOUS_PAGE'
-export const NEXT_PAGE = 'NEXT_PAGE'
+export const START_SLIP = 'START_SLIP'
+export const PAUSE_SLIP = 'PAUSE_SLIP'
+export const STOP_SLIP = 'STOP_SLIP'
