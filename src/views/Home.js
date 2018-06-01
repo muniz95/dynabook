@@ -33,15 +33,20 @@ class Home extends Component {
         const button = isReading
             ? 
                 <div>
-                    <h1 onClick={() => this.pauseText()} class="current-word">{currentWord}</h1>
+                    <span onClick={() => this.pauseText()} class="current-word">{currentWord}</span>
                 </div>
             :
                 <div>
-                    <h1 onClick={() => this.showText()} class="current-word">{currentWord}</h1>
+                    <span onClick={() => this.showText()} class="current-word">{currentWord}</span>
                 </div>
         return (
             <div>
-                { button }
+                <div>
+                    { button }
+                </div>
+                <div id="add-text">
+                    <p className="plus">+</p>
+                </div>
             </div>
         )
     }

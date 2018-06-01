@@ -1,8 +1,8 @@
 import { h } from 'preact'
 
 const Header = () => (
-    <div className="App-header">
-        <h2>Welcome to Preact</h2>
+    <div className="header">
+        Welcome to Preact
     </div>
 )
 
