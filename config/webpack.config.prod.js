@@ -122,6 +122,7 @@ module.exports = {
       {
         test: /\.json$/,
         include: [paths.appSrc, paths.appNodeModules],
+        exclude: /\/manifest.json$/,
         loader: 'json'
       },
       // "file" loader makes sure those assets end up in the `build` folder.
@@ -142,6 +143,14 @@ module.exports = {
         loader: 'file',
         query: {
           name: 'favicon.ico?[hash:8]'
+        }
+      },
+      {
+        test: /\/manifest.json$/,
+        include: [paths.appSrc],
+        loader: 'file',
+        query: {
+          name: 'manifest.json?[hash:8]'
         }
       },
       // "url" loader works just like "file" loader but it also embeds
