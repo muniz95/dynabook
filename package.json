@@ -3,22 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^12.19.16",
-    "@types/react": "^17.0.1",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-router": "^5.1.11",
-    "@types/react-router-dom": "^5.1.7",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.2",
-    "typescript": "^4.1.4",
-    "web-vitals": "^1.1.0"
+    "@types/react": "^18.2.38",
+    "@types/react-dom": "^18.2.17",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^5.3.2",
+    "web-vitals": "^3.5.0"
+  },
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-react-app": "^7.0.1"
   }
 }
