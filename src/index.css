@@ -5,6 +5,12 @@ html, body, #root {
   font-family: sans-serif;
 }
 
+footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+}
+
 .current-word {
   font-size: 72px;
 }
