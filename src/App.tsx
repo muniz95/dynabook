@@ -1,61 +1,66 @@
 import React from 'react';
-import Header from './components/Header'
 import './App.css';
 
 const App = () => {
-  const pageSlip = 500;
+  const [pageSlip, setPageSlip] = React.useState<number>(500);
   const [text, setText] = React.useState<string[]>([]);
   const [currentWordPosition, setCurrentWordPosition] = React.useState(0);
   const [isReading, setIsReading] = React.useState(false);
-  let intervalId: NodeJS.Timeout;
+  const [intervalId, setIntervalId] = React.useState<NodeJS.Timeout | null>(null);
 
-  const showText = () => {
-    setIsReading(true);
-    let i = 0;
-    intervalId = setInterval(function () {
-      if (i < text.length - 1) {
+  const startReadout = (startPosition: number) => {
+    const thread = setInterval(function () {
+      if (startPosition < text.length - 1) {
         setCurrentWordPosition(state => state + 1);
       } else {
-        setCurrentWordPosition(state => 0);
-        pauseText();
+        setCurrentWordPosition(0);
+        stopText();
       }
-      i++;
+      startPosition++;
     }, pageSlip)
+    setIntervalId(thread);
+  }
+
+  const showText = () => {
+    console.log('iniciando leitura');
+
+    setIsReading(true);
+    startReadout(0);
   };
 
-  const pauseText = () => {
+  const stopText = () => {
+    console.log('leitura pausada');
+
     setIsReading(false);
-    clearInterval(intervalId)
+    clearInterval(intervalId!)
+  };
+
+  const resumeText = () => {
+    console.log('continuando leitura');
+
+    setIsReading(true);
+    startReadout(currentWordPosition);
   };
 
   React.useEffect(() => {
     const sampleText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
     setText(sampleText.split(' '));
   }, []);
-  React.useEffect(() => {
-    console.log(currentWordPosition);
-    console.log(text);
-  }, [currentWordPosition, text])
 
   const currentWord = text[currentWordPosition]
-  const button = isReading
-    ?
-    <div>
-      <span onClick={() => pauseText()} className="current-word">{currentWord}</span>
-    </div>
-    :
-    <div>
-      <span onClick={() => showText()} className="current-word">{currentWord}</span>
-    </div>
+  const buttonAction = isReading
+    ? stopText
+    : currentWordPosition > 0
+      ? resumeText
+      : showText;
 
   return (
     <div className="app">
-      <Header />
       <div className="container">
         <div>
-          <div>
-            {button}
-          </div>
+          <span onClick={() => buttonAction()} className="current-word">{currentWord}</span>
+        </div>
+        <div>
           <div id="add-text">
             <p className="plus">+</p>
           </div>
