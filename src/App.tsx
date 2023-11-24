@@ -1,31 +1,43 @@
 import React from 'react';
-import Header from './components/Header'
 import './App.css';
 
 const App = () => {
-  const pageSlip = 500;
+  const [pageSlip, setPageSlip] = React.useState<number>(500);
+  const [isFooterVisible, setIsFooterVisible] = React.useState<boolean>(true);
   const [text, setText] = React.useState<string[]>([]);
   const [currentWordPosition, setCurrentWordPosition] = React.useState(0);
   const [isReading, setIsReading] = React.useState(false);
-  let intervalId: NodeJS.Timeout;
+  const currentTimer = React.useRef<NodeJS.Timeout>();
+
+  const startReadout = (startPosition: number) => {
+    currentTimer.current = setInterval(function () {
+      if (startPosition < text.length - 1) {
+        setCurrentWordPosition(state => state + 1);
+      } else {
+        setCurrentWordPosition(0);
+        stopText();
+      }
+      startPosition++;
+    }, pageSlip)
+  }
+
+  const handlePageSlip = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setPageSlip(target.valueAsNumber);
+  }
 
   const showText = () => {
     setIsReading(true);
-    let i = 0;
-    intervalId = setInterval(function () {
-      if (i < text.length - 1) {
-        setCurrentWordPosition(state => state + 1);
-      } else {
-        setCurrentWordPosition(state => 0);
-        pauseText();
-      }
-      i++;
-    }, pageSlip)
+    startReadout(0);
   };
 
-  const pauseText = () => {
+  const stopText = () => {
     setIsReading(false);
-    clearInterval(intervalId)
+    clearInterval(currentTimer.current);
+  };
+
+  const resumeText = () => {
+    setIsReading(true);
+    startReadout(currentWordPosition);
   };
 
   React.useEffect(() => {
@@ -33,34 +45,25 @@ const App = () => {
     setText(sampleText.split(' '));
   }, []);
   React.useEffect(() => {
-    console.log(currentWordPosition);
-    console.log(text);
-  }, [currentWordPosition, text])
+    setIsFooterVisible(!isReading);
+  }, [isReading]);
 
   const currentWord = text[currentWordPosition]
-  const button = isReading
-    ?
-    <div>
-      <span onClick={() => pauseText()} className="current-word">{currentWord}</span>
-    </div>
-    :
-    <div>
-      <span onClick={() => showText()} className="current-word">{currentWord}</span>
-    </div>
+  const buttonAction = isReading
+    ? stopText
+    : currentWordPosition > 0
+      ? resumeText
+      : showText;
 
   return (
     <div className="app">
-      <Header />
       <div className="container">
-        <div>
-          <div>
-            {button}
-          </div>
-          <div id="add-text">
-            <p className="plus">+</p>
-          </div>
-        </div>
+        <span onClick={() => buttonAction()} className="current-word">{currentWord}</span>
       </div>
+      <footer hidden={!isFooterVisible}>
+        <input type="number" name="pageSlip" id="pageSlip" defaultValue={pageSlip}
+          onChange={handlePageSlip} />
+      </footer>
     </div>
   )
 };
