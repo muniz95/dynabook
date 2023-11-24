@@ -1,16 +1,24 @@
 html, body, #root {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: sans-serif;
+  font-family: Arvo;
 }
 
 footer {
   position: fixed;
-  bottom: 10px;
+  bottom: 20px;
   width: 100%;
 }
 
-.current-word {
-  font-size: 72px;
+@font-face {
+  font-family: 'Arvo';
+  src: local('Arvo'), url(./fonts/Arvo-Regular.ttf) format('truetype');
 }

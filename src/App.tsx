@@ -40,6 +40,9 @@ const App = () => {
     startReadout(currentWordPosition);
   };
 
+  const increasePageSlip = () => setPageSlip(state => state + 1);
+  const decreasePageSlip = () => setPageSlip(state => state - 1);
+
   React.useEffect(() => {
     const sampleText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
     setText(sampleText.split(' '));
@@ -58,11 +61,20 @@ const App = () => {
   return (
     <div className="app">
       <div className="container">
-        <span onClick={() => buttonAction()} className="current-word">{currentWord}</span>
+        <span onClick={() => buttonAction()} className="current-word">
+          {currentWord}
+        </span>
       </div>
-      <footer hidden={!isFooterVisible}>
-        <input type="number" name="pageSlip" id="pageSlip" defaultValue={pageSlip}
-          onChange={handlePageSlip} />
+      <footer>
+        <div className={`text-speed-control ${isFooterVisible ? 'visible' : 'hidden'}`}>
+          <label htmlFor="pageSlip">Duration ({pageSlip} ms)</label>
+          <div className='text-speed-controllers-box'>
+            <button disabled={!isFooterVisible} onClick={decreasePageSlip}>-</button>
+            <input type="range" min="100" max="1000" name="pageSlip" id="pageSlip"
+              defaultValue={pageSlip} disabled={!isFooterVisible} onChange={handlePageSlip} />
+            <button disabled={!isFooterVisible} onClick={increasePageSlip}>+</button>
+          </div>
+        </div>
       </footer>
     </div>
   )
