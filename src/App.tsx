@@ -1,29 +1,29 @@
-import React from 'react';
-import './App.css';
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import "./App.css";
 
 const App = () => {
-  const [pageSlip, setPageSlip] = React.useState<number>(500);
-  const [isFooterVisible, setIsFooterVisible] = React.useState<boolean>(true);
-  const [text, setText] = React.useState<string[]>([]);
-  const [currentWordPosition, setCurrentWordPosition] = React.useState(0);
-  const [isReading, setIsReading] = React.useState(false);
-  const currentTimer = React.useRef<NodeJS.Timeout>();
+  const [pageSlip, setPageSlip] = useState<number>(500);
+  const [isFooterVisible, setIsFooterVisible] = useState<boolean>(true);
+  const [text, setText] = useState<string[]>([]);
+  const [currentWordPosition, setCurrentWordPosition] = useState(0);
+  const [isReading, setIsReading] = useState(false);
+  const currentTimer = useRef<NodeJS.Timeout>();
 
   const startReadout = (startPosition: number) => {
     currentTimer.current = setInterval(function () {
       if (startPosition < text.length - 1) {
-        setCurrentWordPosition(state => state + 1);
+        setCurrentWordPosition((state) => state + 1);
       } else {
         setCurrentWordPosition(0);
         stopText();
       }
       startPosition++;
-    }, pageSlip)
-  }
+    }, pageSlip);
+  };
 
-  const handlePageSlip = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePageSlip = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setPageSlip(target.valueAsNumber);
-  }
+  };
 
   const showText = () => {
     setIsReading(true);
@@ -40,18 +40,19 @@ const App = () => {
     startReadout(currentWordPosition);
   };
 
-  const increasePageSlip = () => setPageSlip(state => state + 1);
-  const decreasePageSlip = () => setPageSlip(state => state - 1);
+  const increasePageSlip = () => setPageSlip((state) => state + 1);
+  const decreasePageSlip = () => setPageSlip((state) => state - 1);
 
-  React.useEffect(() => {
-    const sampleText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-    setText(sampleText.split(' '));
+  useEffect(() => {
+    const sampleText =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    setText(sampleText.split(" "));
   }, []);
-  React.useEffect(() => {
+  useEffect(() => {
     setIsFooterVisible(!isReading);
   }, [isReading]);
 
-  const currentWord = text[currentWordPosition]
+  const currentWord = text[currentWordPosition];
   const buttonAction = isReading
     ? stopText
     : currentWordPosition > 0
@@ -66,19 +67,32 @@ const App = () => {
         </span>
       </div>
       <footer>
-        <div className={`text-speed-control ${isFooterVisible ? 'visible' : 'hidden'}`}>
+        <div
+          className={`text-speed-control ${isFooterVisible ? "visible" : "hidden"}`}
+        >
           <label htmlFor="pageSlip">Duration ({pageSlip} ms)</label>
-          <div className='text-speed-controllers-box'>
-            <button disabled={!isFooterVisible} onClick={decreasePageSlip}>-</button>
-            <input type="range" min="100" max="1000" name="pageSlip" id="pageSlip"
-              defaultValue={pageSlip} disabled={!isFooterVisible} onChange={handlePageSlip} />
-            <button disabled={!isFooterVisible} onClick={increasePageSlip}>+</button>
+          <div className="text-speed-controllers-box">
+            <button disabled={!isFooterVisible} onClick={decreasePageSlip}>
+              -
+            </button>
+            <input
+              type="range"
+              min="100"
+              max="1000"
+              name="pageSlip"
+              id="pageSlip"
+              defaultValue={pageSlip}
+              disabled={!isFooterVisible}
+              onChange={handlePageSlip}
+            />
+            <button disabled={!isFooterVisible} onClick={increasePageSlip}>
+              +
+            </button>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 };
-
 
 export default App;
