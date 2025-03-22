@@ -1,28 +1,24 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import { Container } from '@mui/material';
+import BottomBar from './components/bottom-bar';
+import TextContent from './components/text-content';
+import { useTextReadout } from './hooks/use-text-readout'; // Import the hook
 
 const App = () => {
   const [pageSlip, setPageSlip] = useState<number>(500);
   const [isFooterVisible, setIsFooterVisible] = useState<boolean>(true);
-  const [text, setText] = useState<string[]>([]);
-  const [currentWordPosition, setCurrentWordPosition] = useState(0);
-  const [isReading, setIsReading] = useState(false);
-  const currentTimer = useRef<NodeJS.Timeout>();
+  const {
+    text,
+    currentWordPosition,
+    isReading,
+    setIsReading,
+    startReadout,
+    stopText,
+    resumeText,
+  } = useTextReadout(pageSlip); // Use the hook
 
-  const startReadout = (startPosition: number) => {
-    currentTimer.current = setInterval(function () {
-      if (startPosition < text.length - 1) {
-        setCurrentWordPosition((state) => state + 1);
-      } else {
-        setCurrentWordPosition(0);
-        stopText();
-      }
-      startPosition++;
-    }, pageSlip);
-  };
-
-  const handlePageSlip = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    setPageSlip(target.valueAsNumber);
+  const handlePageSlip = (newValue: number) => {
+    setPageSlip(newValue);
   };
 
   const showText = () => {
@@ -30,24 +26,6 @@ const App = () => {
     startReadout(0);
   };
 
-  const stopText = () => {
-    setIsReading(false);
-    clearInterval(currentTimer.current);
-  };
-
-  const resumeText = () => {
-    setIsReading(true);
-    startReadout(currentWordPosition);
-  };
-
-  const increasePageSlip = () => setPageSlip((state) => state + 1);
-  const decreasePageSlip = () => setPageSlip((state) => state - 1);
-
-  useEffect(() => {
-    const sampleText =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-    setText(sampleText.split(" "));
-  }, []);
   useEffect(() => {
     setIsFooterVisible(!isReading);
   }, [isReading]);
@@ -60,38 +38,27 @@ const App = () => {
       : showText;
 
   return (
-    <div className="app">
-      <div className="container">
-        <span onClick={() => buttonAction()} className="current-word">
-          {currentWord}
-        </span>
-      </div>
-      <footer>
-        <div
-          className={`text-speed-control ${isFooterVisible ? "visible" : "hidden"}`}
-        >
-          <label htmlFor="pageSlip">Duration ({pageSlip} ms)</label>
-          <div className="text-speed-controllers-box">
-            <button disabled={!isFooterVisible} onClick={decreasePageSlip}>
-              -
-            </button>
-            <input
-              type="range"
-              min="100"
-              max="1000"
-              name="pageSlip"
-              id="pageSlip"
-              defaultValue={pageSlip}
-              disabled={!isFooterVisible}
-              onChange={handlePageSlip}
-            />
-            <button disabled={!isFooterVisible} onClick={increasePageSlip}>
-              +
-            </button>
-          </div>
-        </div>
-      </footer>
-    </div>
+    <Container
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#12181f',
+        color: 'white',
+      }}
+    >
+      <TextContent
+        currentWord={currentWord}
+        buttonAction={buttonAction}
+        isReading={isReading}
+      />
+      <BottomBar
+        isFooterVisible={isFooterVisible}
+        pageSlip={pageSlip}
+        handlePageSlip={handlePageSlip}
+      />
+    </Container>
   );
 };
 
