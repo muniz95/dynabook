@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Arvo';
+  src: local('Arvo'), url(./assets/Arvo-Regular.ttf) format('truetype');
+}
+
 html, body, #root {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -10,15 +15,4 @@ html, body, #root {
   padding: 0;
   height: 100%;
   font-family: Arvo;
-}
-
-footer {
-  position: fixed;
-  bottom: 20px;
-  width: 100%;
-}
-
-@font-face {
-  font-family: 'Arvo';
-  src: local('Arvo'), url(./fonts/Arvo-Regular.ttf) format('truetype');
 }
